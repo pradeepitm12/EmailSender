@@ -18,9 +18,23 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-public class EmailUtility {
+public class EmailUtility implements Runnable{
+	String[] to;
+	String [] cc;
+	String[] bcc;
+	String subject;
+	String body;
+	String attachment;	
+	public EmailUtility(String[] to,String [] cc, String[] bcc, String subject, String body,String attachment){
+		this.to=to;
+		this.cc=cc;
+		this.bcc=bcc;
+		this.subject=subject;
+		this.body=body;
+		this.attachment=attachment;
+	}
 
-	public void send(String[] to,String [] cc, String[] bcc, String subject, String body,String attachment){
+	public void send(/*String[] to,String [] cc, String[] bcc, String subject, String body,String attachment*/){
 
 		Properties props = System.getProperties();
 		props.put("mail.smtp.starttls.enable", ConfigConstants.ENABLE_START_TLS);
@@ -46,9 +60,9 @@ public class EmailUtility {
 			for( int i = 0; i < toAddress.length; i++) {
 				message.addRecipient(Message.RecipientType.TO, toAddress[i]);
 			}
-			
+
 			if(cc[0].length()>0){
-				
+
 				for( int i = 0; i < cc.length; i++ ) {
 					ccAddress[i] = new InternetAddress(cc[i]);
 				}
@@ -58,7 +72,7 @@ public class EmailUtility {
 				}
 
 			}
-			
+
 			if(bcc[0].length()>0){
 				for( int i = 0; i < bcc.length; i++ ) {
 					bccAddress[i] = new InternetAddress(bcc[i]);
@@ -67,24 +81,24 @@ public class EmailUtility {
 					message.addRecipient(Message.RecipientType.BCC, bccAddress[i]);
 
 				}
-				
+
 			}
 			message.setSubject(subject);
 			//message.setText(body);
-			 BodyPart messageBodyPart = new MimeBodyPart();
-	         messageBodyPart.setText(body);
-        	 Multipart multipart = new MimeMultipart();
-             multipart.addBodyPart(messageBodyPart);
+			BodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setText(body);
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(messageBodyPart);
 
-	         if(attachment!=null && attachment.length()>1){
-	             messageBodyPart = new MimeBodyPart();
-	             File file=new File(attachment);
-	             DataSource source = new FileDataSource(file);
-	             messageBodyPart.setDataHandler(new DataHandler(source));
-	             messageBodyPart.setFileName("Attachement");
-	             multipart.addBodyPart(messageBodyPart);
-	         }
-	         message.setContent(multipart);
+			if(attachment!=null && attachment.length()>1){
+				messageBodyPart = new MimeBodyPart();
+				File file=new File(attachment);
+				DataSource source = new FileDataSource(file);
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName("Attachement");
+				multipart.addBodyPart(messageBodyPart);
+			}
+			message.setContent(multipart);
 
 			Transport transport = session.getTransport(ConfigConstants.PROTOCOL);
 			transport.connect(ConfigConstants.HOST, ConfigConstants.SENDER_ID , ConfigConstants.SENDER_PASS);
@@ -102,5 +116,10 @@ public class EmailUtility {
 
 
 	}
+	public void run(){
+		send();
+	}
+
+
 
 }

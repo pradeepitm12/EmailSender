@@ -1,5 +1,6 @@
 package com.app.EmailUtil;
 
+import java.sql.Time;
 import java.util.Scanner;
 
 import com.app.Utility.EmailUtility;
@@ -10,16 +11,23 @@ import com.app.Utility.EmailUtility;
  */
 public class App 
 {
-	static boolean hasNext;
+	static boolean hasNext=true;
+	String [] to;
+	String [] cc;
+	String [] bcc;
+	String subject;
+	String body;
+	String attachment;
 	public static void main( String[] args )
 	{
-		String [] to;
-		String [] cc;
-		String [] bcc;
-		String subject;
-		String body;
-		String attachment;
+		
 		while(hasNext){
+			String [] to;
+			String [] cc;
+			String [] bcc;
+			String subject;
+			String body;
+			String attachment;
 		System.out.println("\t\t************ Email Service ************");
 		System.out.println("To give multiple email address for To, CC, and Bcc just give input with comma "
 				+ "\n Example :- "
@@ -51,15 +59,21 @@ public class App
 			System.out.println("Attachment not applicable");
 		}
 
-		EmailUtility email=new EmailUtility();
-
-		email.send(to,cc ,bcc, subject, body,attachment);
 		System.out.println("Want to send more emails yes/no");
 		if(in.nextLine().equalsIgnoreCase("yes")){
 			hasNext=true;
 		}
 		else
 			hasNext=false;
+		EmailUtility email=new EmailUtility(to,cc ,bcc, subject, body,attachment);
+		Thread t=new Thread(email);
+		t.start();
+		
+	
+		
 		}
 	}
+	
+
+	
 }
