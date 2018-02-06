@@ -11,6 +11,7 @@ import com.csvreader.CsvWriter;
 
 import java.text.SimpleDateFormat;  
 import java.util.Date;
+import java.util.Formatter;
 import java.util.Scanner;     
 /**
  * 
@@ -28,9 +29,8 @@ public class App
 	String attachment;
 	static int fileCount=0;
 	static int emailCount=1;
-	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+	static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
 	static Date date = new Date(); 
-
 	static long endTime=0;
 	public static void main( String[] args )
 	{
@@ -46,14 +46,18 @@ public class App
 				csvOutput.write("EmailCount");
 				csvOutput.write("time");
 				csvOutput.endRecord();
+				csvOutput.flush();
+			
 			}
 			// else assume that the file already has the correct header line
 
 			// write out a few records
 			csvOutput.write(Integer.toString(emailCount));
 			csvOutput.write("Email-"+Integer.toString(emailCount++));
-			csvOutput.write("Time-"+date.getTime());
+			csvOutput.write("Time-"+formatter.format(date.getTime()));
 			csvOutput.endRecord();
+			csvOutput.flush();
+			csvOutput.close();
 			while(hasNext){
 				String [] to;
 				String [] cc;
