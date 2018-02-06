@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyReader {
-	
+
 	protected static Properties properties = null;
 	public static String getProperty(String propertyName) {
 

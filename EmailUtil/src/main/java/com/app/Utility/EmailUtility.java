@@ -34,7 +34,7 @@ public class EmailUtility implements Runnable{
 		this.attachment=attachment;
 	}
 
-	public void send(/*String[] to,String [] cc, String[] bcc, String subject, String body,String attachment*/){
+	public void send(){
 
 		Properties props = System.getProperties();
 		props.put("mail.smtp.starttls.enable", ConfigConstants.ENABLE_START_TLS);
@@ -103,9 +103,8 @@ public class EmailUtility implements Runnable{
 			Transport transport = session.getTransport(ConfigConstants.PROTOCOL);
 			transport.connect(ConfigConstants.HOST, ConfigConstants.SENDER_ID , ConfigConstants.SENDER_PASS);
 			transport.sendMessage(message, message.getAllRecipients());
-			System.out.println("SENT");
+			System.out.println("SUCESSFULLY SEND");
 			transport.close();
-			System.out.println("close");
 		}
 		catch (AddressException ae) {
 			ae.printStackTrace();

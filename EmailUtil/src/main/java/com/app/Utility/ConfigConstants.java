@@ -12,6 +12,6 @@ public final  class ConfigConstants {
 	public static final String PORT =PropertyReader.getProperty("port").trim();
 	public static final String ENABLE_START_TLS=PropertyReader.getProperty("enable_start_tls").trim();
 	public static final String ADMIN_EMAIL_ADDRESS=PropertyReader.getProperty("admin_email_address").trim();
-	
-	
+	public static final String OUTPUT_FILE=PropertyReader.getProperty("output_file").trim();
+
 }
